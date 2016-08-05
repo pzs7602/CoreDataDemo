@@ -114,6 +114,7 @@ class ItemListController: UITableViewController {
     // CoreData
     func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        print("name=\(appDelegate.persistentContainer.persistentStoreCoordinator.persistentStores)")
         return appDelegate.persistentContainer.viewContext
     }
     func storeTranscription (audioFileUrlString: String, textFileUrlString: String) -> NSManagedObject? {

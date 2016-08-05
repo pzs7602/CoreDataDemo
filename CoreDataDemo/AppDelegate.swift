@@ -48,12 +48,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var persistentContainer: NSPersistentContainer = {
         /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
+         This will find a model resource in the main bundle named after "CoreDataDemo", load it, create a new NSPersistentStoreCoordinator, and add a persistent store with the same name in the defaultDirectoryURL. The configuration details can be changed on the NSPersistentContainer before calling loadPersistentStores.
+         default URL: ./Library/Application Support/CoreDataDemo.sqlite
         */
         let container = NSPersistentContainer(name: "CoreDataDemo")
+        // we want to use a different persisten store: Binary file
+        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
+        let url = documents?.appendingPathComponent("CoreDataDemo.bin")
+        let storeDescription = NSPersistentStoreDescription()
+        storeDescription.url = url
+        storeDescription.type = NSBinaryStoreType
+        container.persistentStoreDescriptions = [storeDescription]
+//        try! container.persistentStoreCoordinator.addPersistentStore(ofType:  NSBinaryStoreType, configurationName: nil, at: url, options: nil)
+        print("default URL=\(NSPersistentContainer.defaultDirectoryURL())")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
